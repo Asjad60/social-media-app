@@ -59,3 +59,11 @@ export const followUser = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const createProfile = async (req, res) => {
+  try {
+    const user = req.user.id;
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};

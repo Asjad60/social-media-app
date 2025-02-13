@@ -80,7 +80,7 @@ export const getUserDetails = (token, navigate) => {
         throw new Error(response.message);
       }
       // console.log("response user =>> ", response);
-      localStorage.setItem("user", JSON.stringify(response.data));
+      // localStorage.setItem("user", JSON.stringify(response.data));
       dispatch(setUser(response.data));
     } catch (error) {
       // console.log(error);

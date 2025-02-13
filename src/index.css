@@ -3,3 +3,7 @@
 .formData {
   @apply bg-gray-800 text-gray-300 px-2 py-1 outline-none rounded-md w-full;
 }
+
+.btn {
+  @apply p-2 rounded-md font-semibold transition-all bg-purple-600 text-white duration-500 transform hover:scale-[1.02] hover:shadow-lg cursor-pointer flex items-center justify-center gap-2;
+}

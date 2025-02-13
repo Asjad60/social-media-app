@@ -10,3 +10,15 @@ export const getAllPosts = async () => {
     return error.response;
   }
 };
+
+export const getUserPosts = async (token) => {
+  try {
+    const res = await apiConnecter.get(postApiEndpoints.GET_USER_POSTS, token);
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+    return res;
+  } catch (error) {
+    console.log("getUserPostError => ", error);
+  }
+};

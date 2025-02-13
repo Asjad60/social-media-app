@@ -25,7 +25,7 @@ export const createPost = async (req, res) => {
       try {
         uploadedMedia = await Promise.all(
           media.map((file) =>
-            uploadFileToCloud(file.buffer, process.env.CLOUDI_FOLDER)
+            uploadFileToCloud(file, process.env.CLOUDI_FOLDER)
           )
         );
       } catch (error) {
@@ -68,7 +68,12 @@ export const getUserPosts = async (req, res) => {
   try {
     const userId = req.user.id;
     const posts = await Post.find({ user: userId })
-      .populate("likes comments")
+      .populate({
+        path: "likes comments",
+        populate: {
+          path: "userId",
+        },
+      })
       .exec();
 
     if (!posts || posts.length === 0) {

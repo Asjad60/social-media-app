@@ -10,20 +10,24 @@ import LikesRoute from "./routes/LikesRoute.js";
 import ProfileRoutes from "./routes/ProfileRoutes.js";
 import { ConnectCloudinary } from "./config/cloudinary.js";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import { limiter } from "./config/rateLimiter.js";
 
 const app = express();
 connectDB();
 ConnectCloudinary();
 
+app.set("trust proxy", 1);
+
+app.use(helmet());
+app.use(limiter);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: [
-      "https://9f6qq33r-5173.inc1.devtunnels.ms",
-      "http://localhost:5173",
-    ],
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

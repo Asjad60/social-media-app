@@ -8,6 +8,7 @@ const loginAPiEndpoints = {
 
 const postApiEndpoints = {
   GET_ALL_POSTS: BASE_URL + "/posts/getAllPosts",
+  GET_USER_POSTS: BASE_URL + "/posts/getUserPosts",
 };
 
 const profileAPiEndpoints = {

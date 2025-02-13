@@ -17,7 +17,7 @@ export default function ImageSlider({ data }) {
       <Swiper
         style={{
           "--swiper-pagination-color": "#981fa1",
-          "--swiper-pagination-bullet-inactive-color": "#fff",
+          "--swiper-pagination-bullet-inactive-color": "#5072A7",
           "--swiper-pagination-bullet-inactive-opacity": "0.7",
         }}
         zoom={true}
@@ -26,16 +26,17 @@ export default function ImageSlider({ data }) {
         }}
         spaceBetween={10}
         modules={[Zoom, Pagination]}
-        className="mySwiper max-w-[380px] md:max-w-[500px] max-h-[500px] w-full bg-black/35 "
+        className="mySwiper max-w-[380px] md:max-w-[500px] max-h-[500px] w-full"
       >
         {data.map((uri, i) => {
           const imageType = uri.split(".").pop();
           return imageType === "mp4" ? (
-            <SwiperSlide key={i} className="">
+            <SwiperSlide key={i} className="p-1">
               <div className="swiper-zoom-container flex items-center h-full">
                 <video
                   src={uri}
-                  className=" w-full h-full aspect-auto mt-23 object-contain"
+                  preload="metadata"
+                  className=" w-full h-full aspect-square object-contain"
                   autoPlay
                   muted
                   loop
@@ -43,7 +44,7 @@ export default function ImageSlider({ data }) {
               </div>
             </SwiperSlide>
           ) : (
-            <SwiperSlide key={i} className="">
+            <SwiperSlide key={i} className="p-1">
               <div className="swiper-zoom-container">
                 <img
                   src={uri}

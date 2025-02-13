@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useTransition } from "react";
 // import AnimationLine from "../components/common/AnimationLine";
-import dummyProfilePic from "../assets/images/blankprofilepic.webp";
-import Btn from "../components/common/Btn";
-import { PenSquare } from "lucide-react";
 import StoryCard from "../components/core/home/StoryCard";
 import PostsCard from "../components/common/postcard/PostsCard";
 import { getAllPosts } from "../services/operations/postAPi";
 import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { token, user } = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
 
   const getPosts = async () => {
@@ -32,9 +30,12 @@ const Home = () => {
             posts?.map((post) => (
               <PostsCard
                 key={post._id}
-                user={post.user}
+                userOfPost={post.user}
                 postDetail={post}
                 setPosts={setPosts}
+                token={token}
+                currentUser={user}
+                isInProfile={true}
               />
             ))
           ) : (

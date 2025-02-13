@@ -4,7 +4,7 @@ import { Modal } from "./Modal";
 import { Link } from "react-router-dom";
 import dummyprofile from "../../../assets/images/blankprofilepic.webp";
 
-export function LikedByModal({ isOpen, onClose, likes }) {
+export default function LikedByModal({ isOpen, onClose, likes, currentUser }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Liked by">
       <div className="divide-y">
@@ -20,7 +20,9 @@ export function LikedByModal({ isOpen, onClose, likes }) {
                 className="w-10 h-10 rounded-full object-cover"
               />
               <span className="font-medium flex-grow capitalize">
-                {user.userId.name}
+                {currentUser?._id === user.userId?._id
+                  ? "You"
+                  : user.userId.name}
               </span>
               <Heart className="w-4 h-4 text-red-500 fill-current" />
             </div>

@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { Send } from "lucide-react";
 import { Modal } from "./Modal";
 
-export function CommentsModal({ isOpen, onClose, comments, onAddComment }) {
+export default function CommentsModal({
+  isOpen,
+  onClose,
+  comments,
+  onAddComment,
+}) {
   const [newComment, setNewComment] = useState("");
 
   const handleSubmit = (e) => {

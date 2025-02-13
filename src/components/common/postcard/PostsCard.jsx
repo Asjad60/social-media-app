@@ -5,16 +5,23 @@ import ImageSlider from "./ImageSlider";
 import Btn from "../Btn";
 import { timeAgo } from "../../../utils/dateFormatter";
 import { like, unlike } from "../../../services/operations/likeAPI";
-import { useSelector } from "react-redux";
-import { LikedByModal } from "../modals/LikedByModal";
+import LikedByModal from "../modals/LikedByModal";
+import CommentsModal from "../modals/CommentsModal";
 
-const PostsCard = ({ user, postDetail, setPosts }) => {
-  const { token, user: currentUser } = useSelector((state) => state.user);
+const PostsCard = ({
+  userOfPost,
+  postDetail,
+  setPosts,
+  token,
+  currentUser,
+  isInProfile = true,
+}) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [commentModal, setCommentModal] = useState(false);
 
   function checkUserLikedPost() {
     return postDetail?.likes?.some(
-      (obj) => obj.userId._id === currentUser?._id
+      (obj) => obj.userId?._id === currentUser?._id
     );
   }
 
@@ -39,34 +46,38 @@ const PostsCard = ({ user, postDetail, setPosts }) => {
     }
   };
 
+  const handleAddComment = async () => {};
+
   return (
     <>
       <div className="text-gray-300 w-full">
         {/* user profile and post time */}
-        <Link to={`/user-profile/${user._id}`}>
-          <div className="flex gap-4 items-center">
-            <picture>
-              <img
-                src={user.profilePic}
-                alt="profilePic"
-                className="max-w-16 h-16 object-cover rounded-full"
-              />
-            </picture>
-            <div className="flex flex-col gap-1">
-              <span className="capitalize">{user.name}</span>
-              <span className="text-sm">{timeAgo(postDetail.createdAt)}</span>
+        {isInProfile && (
+          <Link to={`/user-profile/${userOfPost._id}`}>
+            <div className="flex gap-4 items-center">
+              <picture>
+                <img
+                  src={userOfPost.profilePic}
+                  alt="profilePic"
+                  className="max-w-16 h-16 object-cover rounded-full"
+                />
+              </picture>
+              <div className="flex flex-col gap-1">
+                <span className="capitalize">{userOfPost.name}</span>
+                <span className="text-sm">{timeAgo(postDetail.createdAt)}</span>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        )}
 
         {/* post slides, content and tags */}
         <div className="mt-5">
           <ImageSlider data={postDetail?.media} />
 
-          {user?.content && (
+          {userOfPost?.content && (
             <div className="flex gap-2 mt-2">
               <span className="text-bold capitalize text-lg font-bold ">
-                {user?.name}
+                {userOfPost?.name}
               </span>
               <p>{postDetail?.content}</p>
             </div>
@@ -100,12 +111,14 @@ const PostsCard = ({ user, postDetail, setPosts }) => {
               {postDetail?.likes?.length}
             </span>
           </Btn>
-          <Btn bg={"none"} notPadding={true}>
+          <Btn
+            bg={"none"}
+            notPadding={true}
+            onClick={() => setCommentModal(true)}
+          >
             <div className="flex gap-1 items-center">
               <MessageCircle />
-              <span className="mt-1" onClick={(e) => setIsOpenModal(true)}>
-                {postDetail?.comments?.length}
-              </span>
+              <span className="mt-1">{postDetail?.comments?.length}</span>
             </div>
           </Btn>
           <Btn bg={"none"} notPadding={true}>
@@ -117,7 +130,7 @@ const PostsCard = ({ user, postDetail, setPosts }) => {
         </div>
 
         {/* comment section */}
-        {currentUser && (
+        {(currentUser || isInProfile) && (
           <div className="flex gap-4 mt-6">
             <img
               src={currentUser.profilePic}
@@ -137,6 +150,13 @@ const PostsCard = ({ user, postDetail, setPosts }) => {
         isOpen={isOpenModal}
         onClose={() => setIsOpenModal(false)}
         likes={postDetail?.likes}
+        currentUser={currentUser}
+      />
+      <CommentsModal
+        isOpen={commentModal}
+        onClose={() => setCommentModal(false)}
+        comments={postDetail?.comments}
+        onAddComment={handleAddComment}
       />
     </>
   );
