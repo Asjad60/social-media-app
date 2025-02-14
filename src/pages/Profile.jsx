@@ -3,6 +3,9 @@ import Btn from "../components/common/Btn";
 import { useSelector } from "react-redux";
 import PostsCard from "../components/common/postcard/PostsCard";
 import { getUserPosts } from "../services/operations/postAPi";
+import dummyProfile from "../assets/images/blankprofilepic.webp";
+import { Link } from "react-router-dom";
+import { Pen } from "lucide-react";
 
 const tabs = ["Posts", "About", "Saved"];
 
@@ -36,11 +39,13 @@ const Profile = () => {
         )}
       </div>
 
-      <div className="flex flex-col min-[480px]:flex-row justify-between items-start -mt-12 p-4">
+      <div className="flex flex-col min-[480px]:flex-row justify-between items-center -mt-12 p-4">
         <div className="flex gap-2">
           {/* profilePic */}
           <div
-            style={{ backgroundImage: `url(${user?.profilePic})` }}
+            style={{
+              backgroundImage: `url(${user?.profilePic || dummyProfile})`,
+            }}
             className={`bg-center bg-cover bg-no-repeat w-24 h-24 rounded-full border-4`}
           />
 
@@ -54,7 +59,10 @@ const Profile = () => {
             </p>
           </div>
         </div>
-        <Btn>Edit Profile</Btn>
+        <Link to="/dashboard/edit-profile" className="btn flex gap-2">
+          <Pen size={20} />
+          Edit Profile
+        </Link>
       </div>
       <div className="flex justify-around mt-20 text-center w-full">
         <div>

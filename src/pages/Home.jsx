@@ -35,7 +35,7 @@ const Home = () => {
                 setPosts={setPosts}
                 token={token}
                 currentUser={user}
-                isInProfile={true}
+                isInProfile={user ? true : false}
               />
             ))
           ) : (

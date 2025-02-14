@@ -35,7 +35,7 @@ export function Sidebar({ ref, isVisible, setIsVisible }) {
   const location = useLocation();
 
   const handleLogout = async () => {
-    console.log("token in sidebar => ", token);
+    // console.log("token in sidebar => ", token);
     if (!token) return navigate("/login");
     dispatch(logout(token));
     setIsVisible(false);
@@ -94,7 +94,7 @@ export function Sidebar({ ref, isVisible, setIsVisible }) {
           </button>
         </nav>
 
-        <Link to={"/post"} className={"btn mt-10 w-full"}>
+        <Link to={"/dashboard/post"} className={"btn mt-10 w-full"}>
           <PenSquare className="w-5 h-5" />
           <span className="font-semibold">Post</span>
         </Link>

@@ -1,18 +1,11 @@
 import React, { useState } from "react";
-import {
-  LogIn,
-  UserPlus,
-  Mail,
-  Github,
-  Twitter,
-  Eye,
-  EyeClosed,
-} from "lucide-react";
+import { LogIn, UserPlus, Mail, Eye, EyeClosed } from "lucide-react";
 import Btn from "../components/common/Btn";
 import { useActionState } from "react";
 import { login, register } from "../services/operations/userAPI";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import googleLogo from "../assets/images/google-logo.webp";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -45,6 +38,10 @@ function Login() {
     }
   }
 
+  const handleGoogleLogin = () => {
+    window.open(`${import.meta.env.VITE_BASE_URL}/auth/google`, "_self");
+  };
+
   return (
     <div className="min-h-[calc(100vh-64px)] animate-gradient flex items-center justify-center p-4">
       <div className="w-full max-w-xl lg:max-w-7xl flex items-center gap-16">
@@ -70,6 +67,7 @@ function Login() {
         {/* Right side - Form */}
         <div className="w-full lg:w-1/2">
           <div className=" backdrop-blur-lg rounded-2xl shadow-2xl p-8 transform transition-all duration-500 ease-out animate-slide-in bg-gray-800 hover:bg-gray-900 animate-pulse-shadow form-card">
+            {/* Header */}
             <div className="text-center mb-8">
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-200 mb-2 animate-slide-down">
                 {isLogin ? "Welcome back!" : "Create account"}
@@ -81,6 +79,7 @@ function Login() {
               </p>
             </div>
 
+            {/* Form  */}
             <form action={formAction} className="space-y-6">
               {!isLogin && (
                 <div className="transform transition-all text-gray-300 duration-500 ease-out animate-slide-in">
@@ -160,6 +159,7 @@ function Login() {
               </Btn>
             </form>
 
+            {/* Continue with */}
             <div className="mt-8 animate-fade-in delay-300">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -172,16 +172,20 @@ function Login() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-4 text-gray-300">
-                <button className="flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-lg transition-all duration-500 transform hover:scale-[1.02] hover:shadow-md hover:border-purple-300 hover-lift group">
-                  <Github className="h-5 w-5 group-hover:rotate-12 transition-transform duration-500" />
-                  <span className="font-medium">GitHub</span>
-                </button>
-                <button className="flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-lg transition-all duration-500 transform hover:scale-[1.02] hover:shadow-md hover:border-purple-300 hover-lift group">
-                  <Twitter className="h-5 w-5 group-hover:rotate-12 transition-transform duration-500" />
-                  <span className="font-medium">Twitter</span>
-                </button>
-              </div>
+              <Btn
+                bg={"none"}
+                customClass={
+                  "w-full mt-5 border border-gray-500 font-monts tracking-wider"
+                }
+                onClick={handleGoogleLogin}
+              >
+                <img
+                  src={googleLogo}
+                  alt="googleLogo"
+                  className="aspect-square rounded-full object-cover w-8 h-8"
+                />
+                <span className=" ml-2 text-lg">Google</span>
+              </Btn>
             </div>
 
             <p className="mt-8 text-center text-gray-300 animate-fade-in delay-400 flex items-center justify-center">

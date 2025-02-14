@@ -1,3 +1,4 @@
+import passport from "passport";
 import { User } from "../models/UserModel.js";
 import { uploadFileToCloud } from "../utils/UploadFileToCloud.js";
 import bcrypt from "bcrypt";
@@ -64,7 +65,7 @@ export const userLogin = async (req, res) => {
     }
 
     const user = await User.findOne({ username }).populate(
-      "followers following profile posts"
+      "followers following profile"
     );
     if (!user) {
       return res.status(404).json({
@@ -83,11 +84,11 @@ export const userLogin = async (req, res) => {
       user.password = undefined;
 
       let options = {
-        // expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        // sameSite: "none",
         httpOnly: true,
         path: "/",
-        // secure: true,
+        sucure: process.env.NODe_ENV === "production",
+        sameSite: "lax",
+        maxAge: 24 * 60 * 60 * 1000,
       };
 
       return res.cookie("token", token, options).status(200).json({
@@ -103,6 +104,7 @@ export const userLogin = async (req, res) => {
       });
     }
   } catch (error) {
+    console.log("login error => ", error);
     return res.status(500).json({
       success: false,
       message: "something went wrong while logging",
@@ -130,4 +132,56 @@ export const logoutUser = async (req, res) => {
       message: "something went wrong while logging out",
     });
   }
+};
+
+export const googleAuth = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+export const googleAuthCallback = (req, res) => {
+  passport.authenticate("google", async (err, user) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Error authenticating with Google",
+      });
+    }
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Failed to get user data from Google",
+      });
+    }
+
+    try {
+      // Generate JWT token
+      const payload = { id: user._id, username: user.username };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "24h",
+      });
+
+      user.token = token;
+      user.password = undefined;
+
+      const options = {
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODe_ENV === "production",
+        sameSite: "lax",
+        maxAge: 24 * 60 * 60 * 1000,
+      };
+
+      const userData = encodeURIComponent(JSON.stringify(user));
+
+      res.cookie("token", token, options);
+      // Redirect to frontend with token in URL (temporary)
+      res.redirect(`${process.env.CLIENT_URL}/auth-success?user=${userData}`);
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Error creating session",
+      });
+    }
+  })(req, res);
 };

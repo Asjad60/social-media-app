@@ -12,19 +12,28 @@ import { ConnectCloudinary } from "./config/cloudinary.js";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import { limiter } from "./config/rateLimiter.js";
+// import passport from "passport";
+import { configurePassport } from "./config/passport.js";
 
 const app = express();
 connectDB();
 ConnectCloudinary();
 
-app.set("trust proxy", 1);
+let passport;
+try {
+  passport = configurePassport();
+} catch (error) {
+  console.error("Failed to configure passport:", error);
+  process.exit(1);
+}
 
+app.set("trust proxy", 1);
 app.use(helmet());
 app.use(limiter);
 app.use(express.json());
+app.use(passport.initialize());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ["http://localhost:5173"],

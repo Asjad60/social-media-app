@@ -130,10 +130,10 @@ const PostsCard = ({
         </div>
 
         {/* comment section */}
-        {(currentUser || isInProfile) && (
+        {currentUser && isInProfile && (
           <div className="flex gap-4 mt-6">
             <img
-              src={currentUser.profilePic}
+              src={currentUser?.profilePic}
               alt="profilePic"
               className="w-10 object-cover aspect-square rounded-full "
             />

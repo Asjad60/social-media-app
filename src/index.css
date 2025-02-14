@@ -5,5 +5,5 @@
 }
 
 .btn {
-  @apply p-2 rounded-md font-semibold transition-all bg-purple-600 text-white duration-500 transform hover:scale-[1.02] hover:shadow-lg cursor-pointer flex items-center justify-center gap-2;
+  @apply p-3 rounded-md font-semibold transition-all bg-purple-600 text-white duration-500 transform hover:scale-[1.02] hover:shadow-lg cursor-pointer flex items-center justify-center gap-2;
 }

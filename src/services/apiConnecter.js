@@ -3,11 +3,12 @@ const apiConnecter = {
     try {
       const response = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
       });
       return await response.json();
     } catch (error) {
       console.log("GET request failed", error);
-      throw error; // Ensure error is propagated
+      return error;
     }
   },
 
@@ -25,6 +26,7 @@ const apiConnecter = {
               Authorization: `Bearer ${token}`,
             },
         body: isFormData ? data : JSON.stringify(data),
+        credentials: "include",
       };
 
       const response = await fetch(`${endpoint}`, options);
@@ -44,6 +46,7 @@ const apiConnecter = {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -63,6 +66,7 @@ const apiConnecter = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);

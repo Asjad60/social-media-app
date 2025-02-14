@@ -4,7 +4,7 @@ export const getUserDetails = async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findById(userId)
-      .populate("followers following profile posts")
+      .populate("followers following profile")
       .select("-password")
       .exec();
 

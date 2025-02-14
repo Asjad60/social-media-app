@@ -1,9 +1,11 @@
 import { loginAPiEndpoints, profileAPiEndpoints } from "../apis";
 import apiConnecter from "../apiConnecter";
 import { setToken, setUser } from "../../slices/userSlice";
+import toast from "react-hot-toast";
 
 export const login = (data, navigate) => {
   return async (dispatch) => {
+    const toastId = toast.loading("Loading...");
     try {
       const response = await apiConnecter.post(
         loginAPiEndpoints.LOGIN_API,
@@ -19,10 +21,12 @@ export const login = (data, navigate) => {
       localStorage.setItem("user", JSON.stringify(response.data));
       dispatch(setToken(response.token));
       dispatch(setUser(response.data));
+      toast.success("Logged in");
       navigate("/");
     } catch (error) {
       console.log("login error ==> ", error);
     }
+    toast.dismiss(toastId);
   };
 };
 
@@ -39,8 +43,10 @@ export const register = (data, setIsLogin) => {
       }
 
       setIsLogin(true);
+      toast.success("Account Created");
     } catch (error) {
       console.log(error);
+      toast.error("Something wrong");
     }
   };
 };
@@ -60,7 +66,7 @@ export const logout = (token) => {
       localStorage.removeItem("user");
       dispatch(setToken(null));
       dispatch(setUser(null));
-      console.log("logout response =>> ", response);
+      // console.log("logout response =>> ", response);
     } catch (error) {
       console.log(error);
       // return error;

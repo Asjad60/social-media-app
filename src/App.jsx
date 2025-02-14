@@ -11,6 +11,7 @@ import OpenRoute from "./components/common/OpenRoute";
 import { lazy, Suspense, useEffect } from "react";
 import { getUserDetails } from "./services/operations/userAPI";
 import { useDispatch, useSelector } from "react-redux";
+import AuthSuccess from "./pages/AuthSuccess";
 
 const Home = lazy(() => import("./pages/Home"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -55,6 +56,14 @@ function App() {
             element={
               <OpenRoute>
                 <Login />
+              </OpenRoute>
+            }
+          />
+          <Route
+            path="/auth-success"
+            element={
+              <OpenRoute>
+                <AuthSuccess />
               </OpenRoute>
             }
           />

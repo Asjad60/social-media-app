@@ -77,8 +77,8 @@ export const getUserPosts = async (req, res) => {
       .exec();
 
     if (!posts || posts.length === 0) {
-      return res.status(404).json({
-        success: false,
+      return res.status(201).json({
+        success: true,
         message: "Nothing Posted",
       });
     }
