@@ -93,15 +93,15 @@ const Footer = () => {
             </h4>
             <div className="space-y-3">
               <p className="flex items-center space-x-3 animate-slide-up delay-100">
-                <MapPin className="h-5 w-5 text-purple-500" />
+                <MapPin className="min-w-5 min-h-5 text-purple-500" />
                 <span>char darwaza, jaipur Rajasthan, 302002</span>
               </p>
               <p className="flex items-center space-x-3 animate-slide-up delay-200">
-                <Phone className="h-5 w-5 text-purple-500" />
+                <Phone className="min-w-5 min-h-5 text-purple-500" />
                 <span>+917014293992</span>
               </p>
               <p className="flex items-center space-x-3 animate-slide-up delay-300">
-                <Mail className="h-5 w-5 text-purple-500" />
+                <Mail className="min-w-5 min-h-5 text-purple-500" />
                 <span>mohdasjad955@gmail.com</span>
               </p>
             </div>

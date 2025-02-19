@@ -1,5 +1,5 @@
 import passport from "passport";
-import { User } from "../models/UserModel.js";
+import User from "../models/UserModel.js";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 export const configurePassport = () => {

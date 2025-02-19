@@ -25,8 +25,10 @@ export const login = (data, navigate) => {
       navigate("/");
     } catch (error) {
       console.log("login error ==> ", error);
+      toast.error(error.message);
+    } finally {
+      toast.dismiss(toastId);
     }
-    toast.dismiss(toastId);
   };
 };
 
@@ -66,6 +68,7 @@ export const logout = (token) => {
       localStorage.removeItem("user");
       dispatch(setToken(null));
       dispatch(setUser(null));
+      toast.success("Logged out");
       // console.log("logout response =>> ", response);
     } catch (error) {
       console.log(error);

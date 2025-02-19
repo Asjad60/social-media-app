@@ -1,5 +1,6 @@
 import { postApiEndpoints } from "../apis";
 import apiConnecter from "../apiConnecter";
+import toast from "react-hot-toast";
 
 export const getAllPosts = async () => {
   try {
@@ -20,5 +21,27 @@ export const getUserPosts = async (token) => {
     return res;
   } catch (error) {
     console.log("getUserPostError => ", error);
+  }
+};
+
+export const createPost = async (data, token) => {
+  const toastId = toast.loading("Loading...");
+  try {
+    const result = await apiConnecter.post(
+      postApiEndpoints.CREATE_POST,
+      data,
+      token,
+      true
+    );
+
+    if (!result.success) {
+      throw new Error(result.message);
+    }
+
+    toast.success("Post created");
+  } catch (error) {
+    console.log("Create Post Error => ", error);
+  } finally {
+    toast.dismiss(toastId);
   }
 };

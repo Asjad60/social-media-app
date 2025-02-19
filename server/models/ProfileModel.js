@@ -4,28 +4,22 @@ const ProfileSchema = new mongoose.Schema(
   {
     gender: {
       type: String,
-      required: true,
+      trim: true,
     },
     age: {
       type: Number,
-      required: true,
     },
     coverPic: {
       type: String,
-      required: true,
     },
     bio: {
       type: String,
-      required: true,
-    },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      index: true,
+      trim: true,
     },
   },
   { timestamps: true }
 );
 
-export const Profile =
+const Profile =
   mongoose.models.Profile || mongoose.model("Profile", ProfileSchema);
+export default Profile;

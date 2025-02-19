@@ -20,6 +20,19 @@
   display: none;
 }
 
+.aimate-post-form {
+  animation: popup 0.6s cubic-bezier(0.18, 1.45, 0.68, 0.24) forwards;
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 @keyframes float {
   0%,
   100% {

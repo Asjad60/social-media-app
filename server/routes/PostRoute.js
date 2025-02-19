@@ -4,7 +4,7 @@ import { upload } from "../config/multer.js";
 import { auth } from "../middleware/Auth.js";
 const router = Router();
 
-router.post("/createPost", upload.array("media"), auth, createPost);
+router.post("/createPost", auth, upload.array("media"), createPost);
 router.get("/getUserPosts", auth, getUserPosts);
 router.get("/getAllPosts", getAllPosts);
 

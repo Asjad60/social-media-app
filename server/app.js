@@ -8,6 +8,7 @@ import PostRoute from "./routes/PostRoute.js";
 import CommentRoute from "./routes/CommentRoute.js";
 import LikesRoute from "./routes/LikesRoute.js";
 import ProfileRoutes from "./routes/ProfileRoutes.js";
+import StoryRoutes from "./routes/StoryRoutes.js";
 import { ConnectCloudinary } from "./config/cloudinary.js";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
@@ -47,6 +48,7 @@ app.use("/api/v1/likes", LikesRoute);
 app.use("/api/v1/posts", PostRoute);
 app.use("/api/v1/comments", CommentRoute);
 app.use("/api/v1/profile", ProfileRoutes);
+app.use("/api/v1/stories", StoryRoutes);
 
 app.get("/", (req, res) => {
   res.send("<h1> Hey buddy i am from server </h1>");

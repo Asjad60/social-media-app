@@ -1,82 +1,62 @@
 const apiConnecter = {
-  get: async (endpoint, token = "") => {
+  request: async (
+    method,
+    endpoint,
+    data = null,
+    token = "",
+    isFormData = false
+  ) => {
     try {
-      const response = await fetch(endpoint, {
-        headers: { Authorization: `Bearer ${token}` },
-        credentials: "include",
-      });
-      return await response.json();
-    } catch (error) {
-      console.log("GET request failed", error);
-      return error;
-    }
-  },
+      const headers = isFormData
+        ? { Authorization: `Bearer ${token}` }
+        : {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          };
 
-  post: async (endpoint, data, token = "", isFormData = false) => {
-    try {
       const options = {
-        method: "POST",
-        headers: isFormData
-          ? {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            }
-          : {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-        body: isFormData ? data : JSON.stringify(data),
+        method,
+        headers,
         credentials: "include",
       };
 
-      const response = await fetch(`${endpoint}`, options);
-
-      return await response.json();
-    } catch (error) {
-      console.log("POST request failed", error);
-      return error;
-    }
-  },
-  put: async (endpoint, data, token = "") => {
-    try {
-      const response = await fetch(`${endpoint}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+      if (data) {
+        options.body = isFormData ? data : JSON.stringify(data);
       }
-      return await response.json();
+
+      const response = await fetch(endpoint, options);
+      const result = await response.json();
+
+      if (response.status === 429) {
+        toast.error("Too many requests. Please try again later.");
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || `Request failed with status ${response.status}`
+        );
+      }
+
+      return result;
     } catch (error) {
-      console.log("PUT request failed", error);
-      return error;
+      // // Handle Rate Limiting
+      console.log("error from apiConnector", error);
+      // toast.error(error.message || "Something went wrong!");
+      // return { error: true, message: error.message };
     }
   },
 
-  delete: async (endpoint, token = "") => {
-    try {
-      const response = await fetch(`${endpoint}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.log("DELETE request failed", error);
-      return error;
-    }
-  },
+  get: async (endpoint, token = "") =>
+    apiConnecter.request("GET", endpoint, null, token),
+
+  post: async (endpoint, data, token = "", isFormData = false) =>
+    apiConnecter.request("POST", endpoint, data, token, isFormData),
+
+  put: async (endpoint, data, token = "") =>
+    apiConnecter.request("PUT", endpoint, data, token),
+
+  delete: async (endpoint, token = "") =>
+    apiConnecter.request("DELETE", endpoint, null, token),
 };
 
 export default apiConnecter;

@@ -28,11 +28,11 @@ const Profile = () => {
       {/* coverPic */}
       <div
         style={{
-          background: user?.profile?.coverPic
+          backgroundImage: user?.profile?.coverPic
             ? `url(${user?.profile?.coverPic})`
             : "linear-gradient(to right,#1F305E, #0a2351)",
         }}
-        className="h-60 flex justify-center items-center"
+        className="h-60 flex justify-center items-center bg-center bg-no-repeat bg-cover"
       >
         {!user?.profile?.coverPic && (
           <p className="text-2xl font-bold">Add Cover Photo</p>

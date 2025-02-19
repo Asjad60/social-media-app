@@ -15,6 +15,7 @@ import AuthSuccess from "./pages/AuthSuccess";
 
 const Home = lazy(() => import("./pages/Home"));
 const Profile = lazy(() => import("./pages/Profile"));
+const EditProfile = lazy(() => import("./pages/EditProfile"));
 const Wrapper = lazy(() => import("./components/common/Wrapper"));
 
 function App() {
@@ -83,6 +84,10 @@ function App() {
             }
           >
             <Route path="/dashboard/profile" element={<Profile />}></Route>
+            <Route
+              path="/dashboard/edit-profile"
+              element={<EditProfile />}
+            ></Route>
           </Route>
         </Routes>
       </main>

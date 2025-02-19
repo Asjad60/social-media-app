@@ -74,12 +74,12 @@ const PostsCard = ({
         <div className="mt-5">
           <ImageSlider data={postDetail?.media} />
 
-          {userOfPost?.content && (
-            <div className="flex gap-2 mt-2">
-              <span className="text-bold capitalize text-lg font-bold ">
+          {postDetail?.content && (
+            <div className="flex items-center gap-2 mt-2">
+              {/* <span className="text-bold capitalize text-lg font-bold ">
                 {userOfPost?.name}
-              </span>
-              <p>{postDetail?.content}</p>
+              </span> */}
+              <p className="text-gray-400">{postDetail?.content}</p>
             </div>
           )}
 

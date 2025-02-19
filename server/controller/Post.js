@@ -1,5 +1,5 @@
-import { Post } from "../models/PostsModel.js";
-import { User } from "../models/UserModel.js";
+import Post from "../models/PostsModel.js";
+import User from "../models/UserModel.js";
 import { uploadFileToCloud } from "../utils/UploadFileToCloud.js";
 
 export const createPost = async (req, res) => {
@@ -25,7 +25,7 @@ export const createPost = async (req, res) => {
       try {
         uploadedMedia = await Promise.all(
           media.map((file) =>
-            uploadFileToCloud(file, process.env.CLOUDI_FOLDER)
+            uploadFileToCloud(file.path, process.env.CLOUDI_FOLDER)
           )
         );
       } catch (error) {

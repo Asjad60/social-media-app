@@ -42,7 +42,7 @@ export default function Navbar() {
             <NavIcon
               icon={<Bell className="h-5 w-5" />}
               label="Notifications"
-              path={"/notifications"}
+              path={"/dashboard/notifications"}
             />
             <Btn bg={"transparent"} onClick={handleClickProfile}>
               <img

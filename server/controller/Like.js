@@ -1,5 +1,5 @@
-import { Like } from "../models/LikesModel.js";
-import { Post } from "../models/PostsModel.js";
+import Like from "../models/LikesModel.js";
+import Post from "../models/PostsModel.js";
 
 export const createLike = async (req, res) => {
   try {

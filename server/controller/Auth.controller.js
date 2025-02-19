@@ -1,5 +1,6 @@
 import passport from "passport";
-import { User } from "../models/UserModel.js";
+import User from "../models/UserModel.js";
+import Profile from "../models/ProfileModel.js";
 import { uploadFileToCloud } from "../utils/UploadFileToCloud.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -27,16 +28,24 @@ export const userRegister = async (req, res) => {
     let uploadProfile;
     if (profilePic) {
       uploadProfile = await uploadFileToCloud(
-        profilePic,
+        profilePic.path,
         process.env.CLOUDI_FOLDER
       );
     }
+
+    const newProfile = await Profile.create({
+      gender: null,
+      age: null,
+      bio: null,
+      coverPic: null,
+    });
 
     const newUser = await User.create({
       name,
       password,
       username,
       profilePic: uploadProfile?.secure_url,
+      profile: newProfile._id,
     });
 
     return res.status(200).json({
@@ -86,7 +95,7 @@ export const userLogin = async (req, res) => {
       let options = {
         httpOnly: true,
         path: "/",
-        sucure: process.env.NODe_ENV === "production",
+        sucure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       };
@@ -167,7 +176,7 @@ export const googleAuthCallback = (req, res) => {
       const options = {
         httpOnly: true,
         path: "/",
-        secure: process.env.NODe_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       };
