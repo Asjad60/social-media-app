@@ -13,8 +13,8 @@ export const createLike = async (req, res) => {
     }
 
     const newLike = await Like.create({
-      userId: user,
-      postId,
+      user: user,
+      post: postId,
     });
 
     const updatedPost = await Post.findByIdAndUpdate(
@@ -27,14 +27,14 @@ export const createLike = async (req, res) => {
         {
           path: "likes",
           populate: {
-            path: "userId",
+            path: "user",
             select: "-password",
           },
         },
         {
           path: "comments",
           populate: {
-            path: "userId",
+            path: "user",
             select: "-password",
           },
         },
@@ -70,7 +70,10 @@ export const unlikePost = async (req, res) => {
       });
     }
 
-    const deleteLike = await Like.findOneAndDelete({ userId: user, postId });
+    const deleteLike = await Like.findOneAndDelete({
+      user: user,
+      post: postId,
+    });
     const removeLikeFromPost = await Post.findByIdAndUpdate(
       postId,
       { $pull: { likes: deleteLike._id } },
@@ -81,14 +84,14 @@ export const unlikePost = async (req, res) => {
         {
           path: "likes",
           populate: {
-            path: "userId",
+            path: "user",
             select: "-password",
           },
         },
         {
           path: "comments",
           populate: {
-            path: "userId",
+            path: "user",
             select: "-password",
           },
         },

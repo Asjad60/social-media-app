@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Btn from "../components/common/Btn";
 import { useSelector } from "react-redux";
 import PostsCard from "../components/common/postcard/PostsCard";
-import { getUserPosts } from "../services/operations/postAPi";
+import { getUserPosts } from "../services/operations/profileAPI";
 import dummyProfile from "../assets/images/blankprofilepic.webp";
 import { Link } from "react-router-dom";
 import { Pen } from "lucide-react";
@@ -39,7 +39,7 @@ const Profile = () => {
         )}
       </div>
 
-      <div className="flex flex-col min-[480px]:flex-row justify-between items-center -mt-12 p-4">
+      <div className="flex flex-col min-[480px]:flex-row justify-between items-center -mt-10 p-4">
         <div className="flex gap-2">
           {/* profilePic */}
           <div
@@ -112,7 +112,7 @@ const Profile = () => {
               token={token}
               currentUser={user}
               setPosts={setPosts}
-              isInProfile={false}
+              isInProfileView={true}
             />
           ))}
         </div>

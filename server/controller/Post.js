@@ -64,38 +64,6 @@ export const createPost = async (req, res) => {
   }
 };
 
-export const getUserPosts = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const posts = await Post.find({ user: userId })
-      .populate({
-        path: "likes comments",
-        populate: {
-          path: "userId",
-        },
-      })
-      .exec();
-
-    if (!posts || posts.length === 0) {
-      return res.status(201).json({
-        success: true,
-        message: "Nothing Posted",
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      message: "Posts found",
-      data: posts,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "something went wrong while getting user posts",
-    });
-  }
-};
-
 export const getAllPosts = async (req, res) => {
   try {
     const allPosts = await Post.find({})
@@ -107,19 +75,13 @@ export const getAllPosts = async (req, res) => {
         {
           path: "likes",
           populate: {
-            path: "userId",
-            select: "-password",
-          },
-        },
-        {
-          path: "comments",
-          populate: {
-            path: "userId",
+            path: "user",
             select: "-password",
           },
         },
       ])
-      .exec();
+      .sort({ createdAt: -1 })
+      .lean();
 
     if (!allPosts || allPosts.length === 0) {
       return res.status(404).json({

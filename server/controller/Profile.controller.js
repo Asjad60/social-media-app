@@ -5,6 +5,7 @@ import {
   uploadFileToCloud,
 } from "../utils/UploadFileToCloud.js";
 import fsPromises from "fs/promises";
+import Post from "../models/PostsModel.js";
 
 export const getUserDetails = async (req, res) => {
   try {
@@ -28,6 +29,38 @@ export const getUserDetails = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getUserPosts = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const posts = await Post.find({ user: userId })
+      .populate({
+        path: "likes comments",
+        populate: {
+          path: "user",
+        },
+      })
+      .exec();
+
+    if (!posts || posts.length === 0) {
+      return res.status(201).json({
+        success: true,
+        message: "Nothing Posted",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Posts found",
+      data: posts,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "something went wrong while getting user posts",
+    });
   }
 };
 
@@ -69,7 +102,7 @@ export const followUser = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name, email, age, gender, bio } = req.body;
+    const { name, email, age = null, gender, bio } = req.body;
     const { coverPic, profilePic } = req.files;
 
     const user = await User.findById(userId).populate("profile");
@@ -85,11 +118,10 @@ export const updateProfile = async (req, res) => {
       await removeFileFromCloud(user.profile.coverPic);
     }
     if (profilePic?.[0] && user?.profilePic) {
-      // Check if the profile picture is from an external source like Google
       const isExternalProfilePic = user.profilePic.includes(
         "googleusercontent.com"
       );
-      // Only remove from cloud if it's not an external profile picture
+
       if (!isExternalProfilePic) {
         await removeFileFromCloud(user.profilePic);
       }

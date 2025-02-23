@@ -12,18 +12,6 @@ export const getAllPosts = async () => {
   }
 };
 
-export const getUserPosts = async (token) => {
-  try {
-    const res = await apiConnecter.get(postApiEndpoints.GET_USER_POSTS, token);
-    if (!res.success) {
-      throw new Error(res.message);
-    }
-    return res;
-  } catch (error) {
-    console.log("getUserPostError => ", error);
-  }
-};
-
 export const createPost = async (data, token) => {
   const toastId = toast.loading("Loading...");
   try {

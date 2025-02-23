@@ -11,7 +11,7 @@ export const login = (data, navigate) => {
         loginAPiEndpoints.LOGIN_API,
         data
       );
-      console.log("login api response ==> ", response);
+      // console.log("login api response ==> ", response);
 
       if (!response.success) {
         throw new Error(response.message);

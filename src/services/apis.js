@@ -8,13 +8,13 @@ const loginAPiEndpoints = {
 
 const postApiEndpoints = {
   GET_ALL_POSTS: BASE_URL + "/posts/getAllPosts",
-  GET_USER_POSTS: BASE_URL + "/posts/getUserPosts",
   CREATE_POST: BASE_URL + "/posts/createPost",
 };
 
 const profileAPiEndpoints = {
   USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
   UPDATE_PROFILE: BASE_URL + "/profile/updateProfile",
+  GET_USER_POSTS: BASE_URL + "/profile/getUserPosts",
 };
 
 const likeApiEndpoints = {
@@ -23,7 +23,11 @@ const likeApiEndpoints = {
 };
 
 const commentApiEndpoints = {
-  COMMENT_API: BASE_URL + "/comments/createComment",
+  CREATE_COMMENT_API: BASE_URL + "/comments/create-comment",
+  DELETE_COMMENT_API: BASE_URL + "/comments/delete",
+  DELETE_REPLY_COMMENT_API: BASE_URL + "/comments/delete-reply",
+  GET_COMMENTS_OF_POST_API: BASE_URL + "/comments/comments-of-post",
+  REPLY_TO_COMMENT_API: BASE_URL + "/comments/reply-to-comment",
 };
 
 const storiesEndpoints = {

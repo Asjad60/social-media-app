@@ -24,3 +24,18 @@ export const updateProfileDetails = async (data, token, dispatch) => {
 
   return result;
 };
+
+export const getUserPosts = async (token) => {
+  try {
+    const res = await apiConnecter.get(
+      profileAPiEndpoints.GET_USER_POSTS,
+      token
+    );
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+    return res;
+  } catch (error) {
+    console.log("getUserPostError => ", error);
+  }
+};

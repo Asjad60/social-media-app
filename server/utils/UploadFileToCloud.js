@@ -7,7 +7,7 @@ export const uploadFileToCloud = async (file, folder, height, width) => {
     resource_type: "auto",
     transformation: [
       {
-        quality: "auto",
+        quality: "auto:low",
         fetch_format: "auto",
       },
     ],

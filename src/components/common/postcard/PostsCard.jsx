@@ -6,7 +6,7 @@ import Btn from "../Btn";
 import { timeAgo } from "../../../utils/dateFormatter";
 import { like, unlike } from "../../../services/operations/likeAPI";
 import LikedByModal from "../modals/LikedByModal";
-import CommentsModal from "../modals/CommentsModal";
+import CommentsModal from "../modals/Comment/CommentsModal";
 
 const PostsCard = ({
   userOfPost,
@@ -14,15 +14,13 @@ const PostsCard = ({
   setPosts,
   token,
   currentUser,
-  isInProfile = true,
+  isInProfileView = false,
 }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [commentModal, setCommentModal] = useState(false);
 
   function checkUserLikedPost() {
-    return postDetail?.likes?.some(
-      (obj) => obj.userId?._id === currentUser?._id
-    );
+    return postDetail?.likes?.some((obj) => obj.user?._id === currentUser?._id);
   }
 
   const updatePostDetails = (data) => {
@@ -46,13 +44,11 @@ const PostsCard = ({
     }
   };
 
-  const handleAddComment = async () => {};
-
   return (
     <>
       <div className="text-gray-300 w-full">
         {/* user profile and post time */}
-        {isInProfile && (
+        {!isInProfileView && (
           <Link to={`/user-profile/${userOfPost._id}`}>
             <div className="flex gap-4 items-center">
               <picture>
@@ -63,7 +59,7 @@ const PostsCard = ({
                 />
               </picture>
               <div className="flex flex-col gap-1">
-                <span className="capitalize">{userOfPost.name}</span>
+                <span>{userOfPost.name}</span>
                 <span className="text-sm">{timeAgo(postDetail.createdAt)}</span>
               </div>
             </div>
@@ -130,7 +126,7 @@ const PostsCard = ({
         </div>
 
         {/* comment section */}
-        {currentUser && isInProfile && (
+        {currentUser && isInProfileView && (
           <div className="flex gap-4 mt-6">
             <img
               src={currentUser?.profilePic}
@@ -152,12 +148,15 @@ const PostsCard = ({
         likes={postDetail?.likes}
         currentUser={currentUser}
       />
-      <CommentsModal
-        isOpen={commentModal}
-        onClose={() => setCommentModal(false)}
-        comments={postDetail?.comments}
-        onAddComment={handleAddComment}
-      />
+      {commentModal && (
+        <CommentsModal
+          isOpen={commentModal}
+          onClose={() => setCommentModal(false)}
+          comments={postDetail?.comments}
+          postDetail={postDetail}
+          userOfPost={userOfPost}
+        />
+      )}
     </>
   );
 };

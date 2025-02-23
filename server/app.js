@@ -15,6 +15,7 @@ import helmet from "helmet";
 import { limiter } from "./config/rateLimiter.js";
 // import passport from "passport";
 import { configurePassport } from "./config/passport.js";
+import errorMiddleware from "./middleware/Error.middleware.js";
 
 const app = express();
 connectDB();
@@ -28,9 +29,7 @@ try {
   process.exit(1);
 }
 
-app.set("trust proxy", 1);
 app.use(helmet());
-app.use(limiter);
 app.use(express.json());
 app.use(passport.initialize());
 app.use(express.urlencoded({ extended: true }));
@@ -42,6 +41,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(limiter);
 
 app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/likes", LikesRoute);
@@ -49,6 +49,8 @@ app.use("/api/v1/posts", PostRoute);
 app.use("/api/v1/comments", CommentRoute);
 app.use("/api/v1/profile", ProfileRoutes);
 app.use("/api/v1/stories", StoryRoutes);
+
+app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
   res.send("<h1> Hey buddy i am from server </h1>");

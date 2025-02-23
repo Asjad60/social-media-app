@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getUserDetails,
+  getUserPosts,
   updateProfile,
 } from "../controller/Profile.controller.js";
 import { auth } from "../middleware/Auth.js";
@@ -9,6 +10,7 @@ import { upload } from "../config/multer.js";
 const router = Router();
 
 router.get("/getUserDetails", auth, getUserDetails);
+router.get("/getUserPosts", auth, getUserPosts);
 router.post(
   "/updateProfile",
   auth,

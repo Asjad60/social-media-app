@@ -31,7 +31,6 @@ const commentSchema = new mongoose.Schema({
 
 const storySchema = new mongoose.Schema(
   {
-    // Text content (optional if media is provided)
     content: {
       type: String,
       trim: true,
@@ -41,7 +40,7 @@ const storySchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    // Media properties
+
     mediaUrl: {
       type: String,
       trim: true,
@@ -51,7 +50,7 @@ const storySchema = new mongoose.Schema(
       enum: ["image", "video", "text"],
       default: "text",
     },
-    // View duration in seconds
+
     duration: {
       type: Number,
       default: 15,
@@ -64,13 +63,13 @@ const storySchema = new mongoose.Schema(
         trim: true,
       },
     ],
-    // Status options
+
     status: {
       type: String,
       enum: ["draft", "published", "archived"],
       default: "published",
     },
-    // When the story will expire (24 hours after creation by default)
+
     expiresAt: {
       type: Date,
       required: true,
@@ -78,16 +77,16 @@ const storySchema = new mongoose.Schema(
         return new Date(Date.now() + 24 * 60 * 60 * 1000);
       },
     },
-    // Track who viewed the story
+
     viewers: [viewerSchema],
-    // Engagement
+
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
-    // Quick reactions (like Instagram "quick reactions")
+
     reactions: [
       {
         emoji: String,
@@ -102,14 +101,14 @@ const storySchema = new mongoose.Schema(
       },
     ],
     comments: [commentSchema],
-    // Optional - if you want to hide story from specific users
+    // Optional
     hiddenFrom: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
-    // Optional - story highlights category (if you want to save stories beyond 24hrs)
+    // Optional
     highlightCategory: {
       type: String,
       trim: true,

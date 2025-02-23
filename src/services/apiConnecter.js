@@ -25,11 +25,19 @@ const apiConnecter = {
       }
 
       const response = await fetch(endpoint, options);
-      const result = await response.json();
 
       if (response.status === 429) {
-        toast.error("Too many requests. Please try again later.");
+        const retryAfter = response.headers.get("Retry-After");
+        throw new Error(
+          "Too many requests. Please try after " + retryAfter + " seconds"
+        );
       }
+
+      if (response.status === 204) {
+        return null;
+      }
+
+      const result = await response.json();
 
       if (!response.ok) {
         throw new Error(
@@ -39,10 +47,7 @@ const apiConnecter = {
 
       return result;
     } catch (error) {
-      // // Handle Rate Limiting
-      console.log("error from apiConnector", error);
-      // toast.error(error.message || "Something went wrong!");
-      // return { error: true, message: error.message };
+      throw error;
     }
   },
 
@@ -55,8 +60,8 @@ const apiConnecter = {
   put: async (endpoint, data, token = "") =>
     apiConnecter.request("PUT", endpoint, data, token),
 
-  delete: async (endpoint, token = "") =>
-    apiConnecter.request("DELETE", endpoint, null, token),
+  delete: async (endpoint, data, token = "") =>
+    apiConnecter.request("DELETE", endpoint, data, token),
 };
 
 export default apiConnecter;

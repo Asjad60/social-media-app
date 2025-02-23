@@ -23,7 +23,7 @@ const Home = () => {
   return (
     <div className="min-h-screen max-w-[900px] mx-auto p-4">
       <section className="flex flex-col justify-between gap-6 mt-6 ">
-        <StoryCard />
+        {token && <StoryCard />}
 
         <div className="flex flex-col gap-20 mt-20 mx-auto w-full">
           {posts?.length !== 0 ? (
@@ -35,7 +35,7 @@ const Home = () => {
                 setPosts={setPosts}
                 token={token}
                 currentUser={user}
-                isInProfile={user ? true : false}
+                isInProfileView={false}
               />
             ))
           ) : (

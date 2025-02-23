@@ -87,7 +87,7 @@ const EditProfile = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gray-900 rounded-2xl shadow-lg overflow-hidden max-w-3xl mx-auto"
+      className="bg-gray-900 rounded-2xl shadow-lg overflow-hidden mx-auto"
     >
       {/* Cover Photo Section */}
       <div className="relative h-64">
@@ -108,6 +108,7 @@ const EditProfile = () => {
           id="coverPic"
           className="hidden"
           onChange={handleInputChange}
+          accept="image/*"
         />
       </div>
 
@@ -137,6 +138,7 @@ const EditProfile = () => {
                 id="profilePic"
                 className="hidden"
                 onChange={handleInputChange}
+                accept="image/*"
               />
             </div>
             <div className="ml-6">
@@ -201,7 +203,7 @@ const EditProfile = () => {
               <input
                 type="number"
                 name="age"
-                defaultValue={user?.profile?.age}
+                defaultValue={user?.profile?.age ? user?.profile?.age : null}
                 className="formData"
                 onChange={handleInputChange}
               />
@@ -226,7 +228,7 @@ const EditProfile = () => {
 
           {/* Submit Button */}
           <div className="mt-8">
-            <Btn type="submit" customClass="w-full">
+            <Btn type="submit">
               <Save size={18} className="mr-1" />
               Save Changes
             </Btn>
