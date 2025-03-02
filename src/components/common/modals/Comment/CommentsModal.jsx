@@ -20,6 +20,7 @@ export default function CommentsModal({
   const { token, user } = useSelector((state) => state.user);
   const [commentList, setCommentList] = useState({});
   const [newComment, setNewComment] = useState("");
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [isPending, startTransition] = useTransition();
 
@@ -56,11 +57,18 @@ export default function CommentsModal({
     });
   };
 
-  const fetchComments = async () => {
+  const fetchComments = async (setLoading) => {
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
     // console.log("calling API");
-    const res = await getCommentsOfaPost(postDetail._id, token, page, 10);
+    const res = await getCommentsOfaPost(
+      postDetail._id,
+      token,
+      page,
+      10,
+      setLoading
+    );
 
-    if (res) {
+    if (res.data) {
       setCommentList((prev) => ({
         ...res.data,
         comments:
@@ -72,28 +80,32 @@ export default function CommentsModal({
   };
 
   useEffect(() => {
-    fetchComments();
+    fetchComments(setLoading);
   }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Comments">
       <div className="flex flex-col h-[500px] justify-between">
-        {commentList?.comments?.length ? (
-          <Comment
-            setReplyTo={setReplyTo}
-            userOfPost={userOfPost}
-            user={user}
-            commentList={commentList}
-            inputRef={inputRef}
-            postDetail={postDetail}
-            token={token}
-            fetchComments={fetchComments}
-            setPage={setPage}
-            page={page}
-          />
+        {!loading ? (
+          commentList?.comments?.length ? (
+            <Comment
+              setReplyTo={setReplyTo}
+              userOfPost={userOfPost}
+              user={user}
+              commentList={commentList}
+              inputRef={inputRef}
+              postDetail={postDetail}
+              token={token}
+              fetchComments={fetchComments}
+              setPage={setPage}
+              page={page}
+            />
+          ) : (
+            <p className="text-center">No comments</p>
+          )
         ) : (
-          <div className="p-4">
-            <span>No Comments</span>
+          <div className="flex justify-center items-center h-full">
+            <div className="loader"></div>
           </div>
         )}
 

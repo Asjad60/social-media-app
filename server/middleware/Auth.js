@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { AppError } from "./Error.middleware.js";
 
 export const auth = async (req, res, next) => {
   try {
@@ -22,5 +23,22 @@ export const auth = async (req, res, next) => {
       success: false,
       message: "Somethign went wrong while verifying token",
     });
+  }
+};
+
+export const socketAuthenticator = async (err, socket, next) => {
+  try {
+    if (err) return next(err);
+    const token = socket.request.cookies.token;
+    if (!token) {
+      return next(new AppError("Please Login to Access This Route", 401));
+    }
+    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+    socket.user = decodedData;
+
+    return next();
+  } catch (error) {
+    console.log(error);
+    return next(new AppError("Please login to access this route", 401));
   }
 };

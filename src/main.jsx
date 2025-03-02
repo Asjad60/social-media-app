@@ -7,18 +7,21 @@ import { Provider } from "react-redux";
 import rootReducer from "./reducer/rootReducer.js";
 import { configureStore } from "@reduxjs/toolkit";
 import { Toaster } from "react-hot-toast";
+import SocketProvider from "./lib/Socket.jsx";
 
 const store = configureStore({
   reducer: rootReducer,
 });
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
+  // <StrictMode>
+  <Provider store={store}>
+    <SocketProvider>
       <BrowserRouter>
         <App />
         <Toaster />
       </BrowserRouter>
-    </Provider>
-  </StrictMode>
+    </SocketProvider>
+  </Provider>
+  // </StrictMode>
 );

@@ -39,3 +39,18 @@ export const getUserPosts = async (token) => {
     console.log("getUserPostError => ", error);
   }
 };
+
+export const getUserProfile = async (token, id) => {
+  try {
+    const res = await apiConnecter.get(
+      `${profileAPiEndpoints.GET_USER_PROFILE}/${id}`,
+      token
+    );
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+    return res;
+  } catch (error) {
+    console.log("getUserPostError => ", error);
+  }
+};

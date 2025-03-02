@@ -8,12 +8,15 @@ import { useSelector } from "react-redux";
 const Home = () => {
   const { token, user } = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState([]);
 
   const getPosts = async () => {
+    setLoading(true);
     const result = await getAllPosts();
     if (result.success) {
       setPosts(result.data);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -21,28 +24,34 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen max-w-[900px] mx-auto p-4">
-      <section className="flex flex-col justify-between gap-6 mt-6 ">
-        {token && <StoryCard />}
-
-        <div className="flex flex-col gap-20 mt-20 mx-auto w-full">
-          {posts?.length !== 0 ? (
-            posts?.map((post) => (
-              <PostsCard
-                key={post._id}
-                userOfPost={post.user}
-                postDetail={post}
-                setPosts={setPosts}
-                token={token}
-                currentUser={user}
-                isInProfileView={false}
-              />
-            ))
-          ) : (
-            <p>No posts to show</p>
-          )}
+    <div className="min-h-screen max-w-[550px] mx-auto p-4">
+      {loading ? (
+        <div className="flex justify-center items-center h-screen">
+          <div className="loader"></div>
         </div>
-      </section>
+      ) : (
+        <section className="flex flex-col justify-between gap-6 mt-6 ">
+          {token && <StoryCard />}
+
+          <div className="flex flex-col gap-20 mt-20 mx-auto w-full">
+            {posts?.length !== 0 ? (
+              posts?.map((post) => (
+                <PostsCard
+                  key={post._id}
+                  userOfPost={post.user}
+                  postDetail={post}
+                  setPosts={setPosts}
+                  token={token}
+                  currentUser={user}
+                  isInProfileView={false}
+                />
+              ))
+            ) : (
+              <p>No posts to show</p>
+            )}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

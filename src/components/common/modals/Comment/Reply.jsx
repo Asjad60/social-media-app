@@ -60,7 +60,7 @@ const Reply = ({ replyDetail, commentId, handleReply, authorId }) => {
           {isVisible === replyDetail?._id && (
             <div
               ref={ref}
-              className={`flex flex-col gap-1 text-[10px] absolute right-5 -bottom-20 z-[900] bg-gray-700 rounded-lg p-2`}
+              className={`flex flex-col gap-1 text-[10px] absolute right-5 -bottom-10 z-[900] bg-gray-700 rounded-lg p-2`}
             >
               {replyDetail?.user._id === user?._id && (
                 <Btn

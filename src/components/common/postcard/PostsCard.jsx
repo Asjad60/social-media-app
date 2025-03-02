@@ -7,6 +7,7 @@ import { timeAgo } from "../../../utils/dateFormatter";
 import { like, unlike } from "../../../services/operations/likeAPI";
 import LikedByModal from "../modals/LikedByModal";
 import CommentsModal from "../modals/Comment/CommentsModal";
+import toast from "react-hot-toast";
 
 const PostsCard = ({
   userOfPost,
@@ -33,7 +34,7 @@ const PostsCard = ({
 
   const handleLikeAndUnlike = async () => {
     if (!token) {
-      return alert("You are not loggged in");
+      return toast.error("You are not logged in");
     }
     if (checkUserLikedPost()) {
       const res = await unlike(postDetail._id, token);
@@ -68,7 +69,9 @@ const PostsCard = ({
 
         {/* post slides, content and tags */}
         <div className="mt-5">
-          <ImageSlider data={postDetail?.media} />
+          <div className={`bg-gray-900 $`}>
+            <ImageSlider data={postDetail?.media} />
+          </div>
 
           {postDetail?.content && (
             <div className="flex items-center gap-2 mt-2">
@@ -79,7 +82,7 @@ const PostsCard = ({
             </div>
           )}
 
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-2 mb-2">
             {postDetail?.tags?.map((tag, i) => (
               <span key={i} className="text-sm text-gray-500">
                 #{tag}

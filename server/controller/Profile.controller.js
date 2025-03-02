@@ -7,31 +7,6 @@ import {
 import fsPromises from "fs/promises";
 import Post from "../models/PostsModel.js";
 
-export const getUserDetails = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const user = await User.findById(userId)
-      .populate("followers following profile")
-      .select("-password")
-      .exec();
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "User details fetched successfully",
-      data: user,
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
 export const getUserPosts = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -61,41 +36,6 @@ export const getUserPosts = async (req, res) => {
       success: false,
       message: "something went wrong while getting user posts",
     });
-  }
-};
-
-export const followUser = async (req, res) => {
-  try {
-    const currentUserId = req.user.id;
-    const { userId } = req.body;
-
-    if (!userId) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing User",
-      });
-    }
-
-    await Promise.all([
-      User.findByIdAndUpdate(
-        currentUserId,
-        { $push: { following: userId } },
-        { new: true }
-      ),
-
-      User.findOneAndUpdate(
-        userId,
-        { $push: { followers: currentUserId } },
-        { new: true }
-      ),
-    ]);
-
-    return res.status(200).json({
-      success: true,
-      message: "User followed",
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -203,5 +143,40 @@ export const updateProfile = async (req, res) => {
 
     console.log(error);
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId)
+      .populate("profile following followers")
+      .populate({
+        path: "posts",
+        populate: {
+          path: "likes comments",
+          populate: {
+            path: "user",
+            select: "name profilePic",
+          },
+        },
+      })
+      .select("-password")
+      .lean();
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    } else {
+      return res
+        .status(200)
+        .json({ success: true, message: "User found", data: user });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while getting user profile",
+    });
   }
 };

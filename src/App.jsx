@@ -12,11 +12,12 @@ import { lazy, Suspense, useEffect } from "react";
 import { getUserDetails } from "./services/operations/userAPI";
 import { useDispatch, useSelector } from "react-redux";
 import AuthSuccess from "./pages/AuthSuccess";
+import Explore from "./pages/Explore";
 
 const Home = lazy(() => import("./pages/Home"));
 const Profile = lazy(() => import("./pages/Profile"));
 const EditProfile = lazy(() => import("./pages/EditProfile"));
-const Wrapper = lazy(() => import("./components/common/Wrapper"));
+const Dashboard = lazy(() => import("./components/common/Wrapper"));
 
 function App() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function App() {
       if (!token) return;
       dispatch(getUserDetails(token, navigate));
     })();
-  }, []);
+  }, [token]);
 
   return (
     <div className="font-roboto flex flex-col min-h-screen w-screen bg-gradient-to-br from-gray-950 via-gray-800 to-gray-950">
@@ -73,21 +74,20 @@ function App() {
               <PrivateRoute>
                 <Suspense
                   fallback={
-                    <div className="text-2xl font-monts text-gray-300 min-h-[calc(100vh-64px)] w-screen grid place-items-center">
-                      Loading...
+                    <div className=" min-h-[calc(100vh-64px)] w-screen grid place-items-center">
+                      <div className="loading"></div>
                     </div>
                   }
                 >
-                  <Wrapper />
+                  <Dashboard />
                 </Suspense>
               </PrivateRoute>
             }
           >
-            <Route path="/dashboard/profile" element={<Profile />}></Route>
-            <Route
-              path="/dashboard/edit-profile"
-              element={<EditProfile />}
-            ></Route>
+            <Route path="/dashboard/profile" element={<Profile />} />
+            <Route path="/dashboard/edit-profile" element={<EditProfile />} />
+            <Route path="/dashboard/explore" element={<Explore />} />
+            <Route path="/user-profile/:id" element={<Profile />} />
           </Route>
         </Routes>
       </main>

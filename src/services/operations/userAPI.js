@@ -1,4 +1,4 @@
-import { loginAPiEndpoints, profileAPiEndpoints } from "../apis";
+import { loginAPiEndpoints, userAPiEndpoints } from "../apis";
 import apiConnecter from "../apiConnecter";
 import { setToken, setUser } from "../../slices/userSlice";
 import toast from "react-hot-toast";
@@ -81,7 +81,7 @@ export const getUserDetails = (token, navigate) => {
   return async (dispatch) => {
     try {
       const response = await apiConnecter.get(
-        profileAPiEndpoints.USER_DETAILS_API,
+        userAPiEndpoints.USER_DETAILS_API,
         token
       );
 

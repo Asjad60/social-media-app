@@ -6,8 +6,10 @@ export const getCommentsOfaPost = async (
   postId,
   token,
   page = 1,
-  limit = 10
+  limit = 10,
+  setLoading
 ) => {
+  setLoading(true);
   let result;
   try {
     result = await apiConnecter.get(
@@ -18,6 +20,8 @@ export const getCommentsOfaPost = async (
     // toast.success();
   } catch (error) {
     console.log(error);
+  } finally {
+    setLoading(false);
   }
   return result;
 };

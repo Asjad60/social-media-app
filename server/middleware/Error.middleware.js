@@ -1,12 +1,10 @@
-// errorMiddleware.js
-
-// Custom Error class for better error handling
 class AppError extends Error {
   constructor(message, statusCode) {
     super(message);
     this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith("4") ? "fail" : "error";
     this.isOperational = true;
+    this.success = false;
     Error.captureStackTrace(this, this.constructor);
   }
 }
@@ -23,7 +21,7 @@ const errorMiddleware = (err, req, res, next) => {
       status: err.status,
       error: err,
       message: err.message,
-      stack: err.stack,
+      success: err.success,
     });
   }
 
@@ -61,6 +59,7 @@ const errorMiddleware = (err, req, res, next) => {
     console.error("ERROR 💥", err);
     return res.status(500).json({
       status: "error",
+      success: false,
       message: "Something went terribly wrong!",
     });
   }
@@ -90,4 +89,5 @@ const handleJWTError = () =>
 const handleJWTExpiredError = () =>
   new AppError("Your token has expired! Please log in again.", 401);
 
+export { AppError };
 export default errorMiddleware;

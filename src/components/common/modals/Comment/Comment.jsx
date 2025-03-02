@@ -72,13 +72,15 @@ const Comment = ({
     };
   }, [commentScrollRef.current]);
 
+  const fetchingComments = async () => {
+    setLoading(true);
+    await fetchComments(setLoading);
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (page > 1 && page <= Number(commentList.pages)) {
-      (async () => {
-        setLoading(true);
-        await fetchComments();
-        setLoading(false);
-      })();
+      fetchingComments();
     }
   }, [page]);
 
@@ -139,7 +141,7 @@ const Comment = ({
               {isVisible === comment?._id && (
                 <div
                   ref={ref}
-                  className={`flex flex-col gap-1 text-[10px] absolute right-5 -bottom-20 z-[900] bg-gray-700 rounded-lg p-2`}
+                  className={`flex flex-col gap-1 text-[10px] absolute right-5 -bottom-10 z-[900] bg-gray-700 rounded-lg p-2`}
                 >
                   {(comment?.user._id === user?._id ||
                     userOfPost?._id === user?._id) && (

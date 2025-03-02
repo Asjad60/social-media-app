@@ -6,15 +6,19 @@ const loginAPiEndpoints = {
   LOGOUT_API: BASE_URL + "/auth/logout",
 };
 
+const userAPiEndpoints = {
+  USER_DETAILS_API: BASE_URL + "/user/getUserDetails",
+};
+
 const postApiEndpoints = {
   GET_ALL_POSTS: BASE_URL + "/posts/getAllPosts",
   CREATE_POST: BASE_URL + "/posts/createPost",
 };
 
 const profileAPiEndpoints = {
-  USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
   UPDATE_PROFILE: BASE_URL + "/profile/updateProfile",
   GET_USER_POSTS: BASE_URL + "/profile/getUserPosts",
+  GET_USER_PROFILE: BASE_URL + "/profile/getUserProfile",
 };
 
 const likeApiEndpoints = {
@@ -41,4 +45,5 @@ export {
   likeApiEndpoints,
   commentApiEndpoints,
   storiesEndpoints,
+  userAPiEndpoints,
 };
